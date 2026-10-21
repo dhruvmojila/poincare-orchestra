@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the ICBDML 2026 paper (preferred-citation)."
+type: software
+title: "poincare-orchestra"
+authors:
+  - family-names: Mojila
+    given-names: Dhruv
+    orcid: "https://orcid.org/0009-0007-9596-7503"
+version: 0.1.0
+date-released: "2026-10-10"
+license: Apache-2.0
+repository-code: "https://github.com/dhruvmojila/poincare-orchestra"
+abstract: "Scenario-first reference implementation of LLM orchestration with geometry-aware memory: metacognitive controller, provider-agnostic ensemble with throttling detection, multi-objective synthesis."
+keywords: [llm orchestration, multi-agent systems, agent memory, hyperbolic embeddings]
+preferred-citation:
+  type: conference-paper
+  title: "LLM Orchestration with Geometry-Aware Memory"
+  authors:
+    - family-names: Mojila
+      given-names: Dhruv
+      orcid: "https://orcid.org/0009-0007-9596-7503"
+  collection-title: "2026 2nd International Conference on Big Data & Machine Learning (ICBDML)"
+  collection-type: proceedings
+  conference:
+    name: "2026 2nd International Conference on Big Data & Machine Learning (ICBDML)"
+    city: Bhopal
+    country: IN
+    date-start: "2026-02-27"
+    date-end: "2026-02-28"
+  publisher:
+    name: IEEE
+  year: 2026
+  month: 2
+  start: 1
+  end: 7
+  doi: 10.1109/ICBDML68582.2026.11544690

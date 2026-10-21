@@ -1,0 +1,154 @@
+name: clinical_anatomy
+title: Clinical anatomy tutor
+description: Hierarchical anatomy with clinical correlations and recent teaching cases.
+knowledge:
+- id: anatomy
+  text: Human anatomy organised for clinical reasoning
+  meta:
+    domain: anatomy
+- id: msk
+  text: 'Musculoskeletal system: joints, muscles and their clinical injuries'
+  parent: anatomy
+  meta:
+    domain: musculoskeletal
+- id: shoulder
+  text: 'Shoulder: glenohumeral joint stabilised by the rotator cuff'
+  parent: msk
+- id: cuff
+  text: 'Rotator cuff muscles: supraspinatus, infraspinatus, teres minor and subscapularis (SITS)'
+  parent: shoulder
+- id: supra
+  text: Supraspinatus initiates abduction and is the most commonly torn rotator cuff tendon
+  parent: cuff
+- id: knee
+  text: 'Knee: hinge joint with cruciate and collateral ligaments and the menisci'
+  parent: msk
+- id: acl
+  text: The anterior cruciate ligament (ACL) prevents anterior tibial translation; it tears in pivoting
+    injuries with a pop and rapid swelling
+  parent: knee
+- id: meniscus
+  text: Menisci distribute load; medial meniscus tears cause joint-line tenderness and locking
+  parent: knee
+- id: hip
+  text: 'Hip: ball-and-socket joint; the gluteus medius abducts and stabilises the pelvis in stance'
+  parent: msk
+- id: trendelenburg
+  text: 'Gluteus medius weakness produces a Trendelenburg sign: the pelvis drops on the opposite side
+    when standing on one leg'
+  parent: hip
+- id: cv
+  text: 'Cardiovascular system: heart, coronary arteries and great vessels'
+  parent: anatomy
+  meta:
+    domain: cardiovascular
+- id: coronaries
+  text: The left coronary artery divides into the left anterior descending and circumflex; the right coronary
+    supplies the sinoatrial node in most people
+  parent: cv
+- id: lad
+  text: Left anterior descending occlusion causes anterior myocardial infarction with ST elevation in
+    leads V1-V4
+  parent: coronaries
+- id: valves
+  text: 'Heart valves: mitral and tricuspid close in systole producing the first heart sound; aortic and
+    pulmonary close in diastole'
+  parent: cv
+- id: nervous
+  text: 'Nervous system: peripheral nerves and plexuses'
+  parent: anatomy
+  meta:
+    domain: nervous
+- id: brachial
+  text: 'Brachial plexus: roots C5-T1 form trunks, divisions, cords and branches'
+  parent: nervous
+- id: erb
+  text: 'Upper trunk injury (C5-C6) causes Erb''s palsy: adducted, internally rotated arm with extended
+    elbow, the waiter''s tip posture'
+  parent: brachial
+- id: median
+  text: The median nerve passes through the carpal tunnel; compression causes numbness in the lateral
+    three and a half digits
+  parent: brachial
+- id: sciatic
+  text: The sciatic nerve (L4-S3) exits below piriformis and divides into tibial and common fibular nerves
+  parent: nervous
+- id: fibular
+  text: Common fibular nerve injury at the fibular neck causes foot drop and loss of dorsiflexion
+  parent: sciatic
+- id: cases
+  text: Teaching cases
+  parent: anatomy
+  meta:
+    domain: cases
+- id: case1
+  text: 'Case: 22-year-old footballer, pivoting injury, heard a pop, knee swollen within an hour'
+  parent: cases
+  days_ago: 2.0
+- id: case2
+  text: 'Case: 60-year-old with painful arc on abduction and weakness initiating abduction'
+  parent: cases
+  days_ago: 9.0
+- id: case3
+  text: 'Case: newborn after difficult delivery holding the arm in waiter''s tip posture'
+  parent: cases
+  days_ago: 20.0
+profiles:
+- name: tutor-model
+  provider: provider-a
+  domains:
+  - musculoskeletal
+  - cardiovascular
+  - nervous
+  reasoning: 0.85
+  creativity: 0.6
+  reliability: 0.8
+  latency_s: 1.5
+- name: case-model
+  provider: provider-b
+  domains:
+  - cases
+  reasoning: 0.7
+  reliability: 0.9
+  cost_per_call: 0.5
+  latency_s: 0.5
+roles:
+- name: anatomist
+  description: Anatomy tutor
+  system_prompt: You are an anatomy tutor. Explain structure and function from the records; cite record
+    ids.
+  domains:
+  - musculoskeletal
+  - cardiovascular
+  - nervous
+  profile: tutor-model
+- name: clinician
+  description: Clinical correlator
+  system_prompt: You relate anatomy to clinical presentations from the records; cite record ids.
+  domains:
+  - cases
+  - musculoskeletal
+  - nervous
+  - cardiovascular
+  profile: case-model
+tasks:
+- question: Which rotator cuff muscle is most often torn and why does the patient struggle to start abduction?
+  expected_facets:
+  - supraspinatus
+  - abduction
+- question: Explain the mechanism of ACL injury and the typical presentation.
+  expected_facets:
+  - anterior cruciate
+  - pop
+- question: A newborn holds the arm in waiter's tip posture; which roots are injured?
+  expected_facets:
+  - C5
+  - Erb
+- question: Compare the territories of the left anterior descending and the right coronary artery.
+  expected_facets:
+  - left anterior descending
+  - right coronary
+policy:
+  max_subtasks: 3
+  total_budget: 4.0
+  decay: none

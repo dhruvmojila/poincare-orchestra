@@ -1,0 +1,213 @@
+name: sprint_coaching
+title: 400 m sprint coaching assistant
+description: Physiology, biomechanics, strength and athlete records; dated observations decay with a 30-day
+  half-life.
+knowledge:
+- id: program
+  text: Sprint programme for a 400 m specialist training group
+  meta:
+    domain: program
+- id: physiology
+  text: 'Physiology: energy systems and recovery for 400 m running'
+  parent: program
+  meta:
+    domain: physiology
+- id: energy
+  text: 400 m energy contribution is roughly 60% anaerobic and 40% aerobic; the glycolytic system dominates
+    the second half of the race
+  parent: physiology
+- id: lactate
+  text: Blood lactate peaks several minutes after a 400 m effort; lactate tolerance sessions such as 3
+    x 300 m at 95% raise buffering capacity
+  parent: physiology
+- id: aerobic
+  text: Aerobic power supports repeat 300-400 m efforts and recovery between rounds; tempo runs at 70-75%
+    build it
+  parent: physiology
+- id: fibres
+  text: Fast-twitch type IIx fibres produce the highest power but fatigue quickly; sprinters protect them
+    with full recovery between maximal reps
+  parent: physiology
+- id: sleep
+  text: 'Recovery: 8-9 hours of sleep and 48 hours between high-intensity sessions reduce soft-tissue
+    injury risk'
+  parent: physiology
+- id: biomechanics
+  text: 'Biomechanics: sprint mechanics and injury mechanisms'
+  parent: program
+  meta:
+    domain: biomechanics
+- id: contact
+  text: Ground contact time near 0.1 s at top speed; stride frequency and stride length trade off against
+    each other
+  parent: biomechanics
+- id: late_swing
+  text: Hamstring strains occur mostly in late swing, when the hamstrings decelerate the swinging leg
+    before ground contact under high eccentric load
+  parent: biomechanics
+- id: hip_ext
+  text: Gluteus maximus drives hip extension during acceleration; weak glutes shift load to the hamstrings
+  parent: biomechanics
+- id: calf_mech
+  text: The calf complex stores and returns elastic energy at ground contact; the soleus carries most
+    of the load at sprint speeds
+  parent: biomechanics
+- id: posture
+  text: Excessive forward trunk lean at top speed increases hamstring strain through longer hip flexion
+    in late swing
+  parent: biomechanics
+- id: strength
+  text: Strength and conditioning for sprinters
+  parent: program
+  meta:
+    domain: strength
+- id: nordic
+  text: Nordic hamstring curls reduce hamstring strain risk; progress from 2 x 4 to 3 x 8 repetitions
+    over four weeks
+  parent: strength
+- id: eccentric
+  text: Eccentric hamstring work at long muscle lengths (Romanian deadlifts, slider curls) improves flexibility
+    and strain resistance
+  parent: strength
+- id: hip_strength
+  text: Hip thrusts and single-leg bridges build gluteus maximus strength for acceleration
+  parent: strength
+- id: plyo
+  text: Plyometrics (bounds, hurdle hops) load the calf complex heavily; return to them only after pain-free
+    hopping
+  parent: strength
+- id: calf_raise
+  text: Calf rehabilitation progresses from isometric holds to heavy slow soleus raises, then hopping,
+    then plyometrics
+  parent: strength
+- id: athletes
+  text: Athlete records and recent observations
+  parent: program
+  meta:
+    domain: athletes
+- id: athlete_a
+  text: 'Athlete A: 400 m personal best 47.2 s, right-leg dominant, history of left hamstring strain in
+    2025'
+  parent: athletes
+- id: a_tight
+  text: Athlete A reported tight hamstrings after 400 m repeats
+  parent: athlete_a
+  days_ago: 30.0
+  meta:
+    kind: event
+- id: a_eccentric
+  text: Athlete A started eccentric hamstring work twice a week
+  parent: athlete_a
+  days_ago: 21.0
+  meta:
+    kind: event
+- id: a_better
+  text: 'Athlete A: hamstring flexibility improved after two weeks of eccentric work; no pain during 300
+    m repeats'
+  parent: athlete_a
+  days_ago: 7.0
+  meta:
+    kind: event
+- id: a_lean
+  text: 'Video review: Athlete A shows forward trunk lean in the final 100 m'
+  parent: athlete_a
+  days_ago: 5.0
+  meta:
+    kind: event
+- id: athlete_b
+  text: 'Athlete B: 400 m personal best 48.9 s, left-leg dominant'
+  parent: athletes
+- id: b_strain
+  text: 'Athlete B: grade 1 calf strain, soleus tender on palpation'
+  parent: athlete_b
+  days_ago: 42.0
+  meta:
+    kind: event
+- id: b_rehab
+  text: Athlete B progressed to heavy slow soleus raises without pain
+  parent: athlete_b
+  days_ago: 14.0
+  meta:
+    kind: event
+- id: b_hop
+  text: Athlete B completed pain-free single-leg hopping test
+  parent: athlete_b
+  days_ago: 3.0
+  meta:
+    kind: event
+profiles:
+- name: deep-reasoner
+  provider: provider-a
+  domains:
+  - physiology
+  - biomechanics
+  - program
+  reasoning: 0.9
+  reliability: 0.8
+  cost_per_call: 1.5
+  latency_s: 2.0
+- name: fast-specialist
+  provider: provider-b
+  domains:
+  - strength
+  - athletes
+  reasoning: 0.6
+  creativity: 0.4
+  reliability: 0.9
+  cost_per_call: 0.6
+  latency_s: 0.6
+roles:
+- name: physiologist
+  description: Exercise physiologist
+  system_prompt: You are an exercise physiologist. Answer from the records; cite record ids.
+  domains:
+  - physiology
+  - athletes
+  profile: deep-reasoner
+- name: biomechanist
+  description: Sprint biomechanist
+  system_prompt: You are a sprint biomechanist. Explain mechanisms from the records; cite record ids.
+  domains:
+  - biomechanics
+  - athletes
+  profile: deep-reasoner
+- name: strength_coach
+  description: Strength and conditioning coach
+  system_prompt: You are a strength and conditioning coach. Give concrete progressions from the records;
+    cite record ids.
+  domains:
+  - strength
+  - athletes
+  profile: fast-specialist
+- name: analyst
+  description: Performance analyst
+  system_prompt: You are a performance analyst. Summarise athlete records with dates; cite record ids.
+  domains:
+  - program
+  - athletes
+  profile: fast-specialist
+tasks:
+- question: Athlete A reports recurring hamstring tightness after 400 m repeats. Plan the next two weeks.
+  expected_facets:
+  - hamstring
+  - eccentric
+  - Athlete A
+- question: Why do hamstring strains happen in late swing, and what reduces the risk?
+  expected_facets:
+  - late swing
+  - Nordic
+- question: Is Athlete B ready to resume plyometrics?
+  expected_facets:
+  - Athlete B
+  - hopping
+- question: Compare the aerobic and glycolytic demands of the 400 m and how to train each.
+  expected_facets:
+  - glycolytic
+  - aerobic
+- question: Athlete A shows forward trunk lean at the end of the race; explain the injury implication
+    and then recommend a drill.
+  expected_facets:
+  - trunk lean
+  - hamstring
+policy:
+  total_budget: 8.0

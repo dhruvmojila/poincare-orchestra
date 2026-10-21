@@ -1,0 +1,105 @@
+# A complete hand-written scenario. Everything the orchestrator needs is in this file:
+# the knowledge hierarchy (parents before children), dated and versioned records,
+# capability profiles, roles, example tasks with facets, and the controller policy.
+name: greenhouse
+title: Greenhouse crop advisor
+description: Climate, pest and crop knowledge for a small tomato greenhouse, with dated scouting notes.
+knowledge:
+- id: greenhouse
+  text: Greenhouse operations knowledge base for tomatoes and cucumbers
+  meta: {domain: operations}
+- id: climate
+  text: "Climate: temperature, humidity and ventilation targets"
+  parent: greenhouse
+  meta: {domain: climate}          # a branch label; analysis reports it as a domain
+- id: temp
+  text: Tomatoes set fruit best between 18 and 26 °C; above 32 °C pollen viability drops sharply
+  parent: climate
+- id: humidity
+  text: Keep relative humidity below 85% at night to limit botrytis and leaf mould
+  parent: climate
+- id: venting
+  text: Open roof vents when the canopy exceeds 24 °C; a 2 °C day-night difference improves fruit set
+  parent: climate
+- id: pests
+  text: "Pests and diseases: identification and thresholds"
+  parent: greenhouse
+  meta: {domain: pests}
+- id: whitefly
+  text: Whitefly adults sit on the underside of young leaves; treat when counts exceed 5 per leaf
+  parent: pests
+- id: encarsia
+  text: Encarsia formosa parasitises whitefly nymphs; release weekly at 3 per square metre while counts rise
+  parent: pests
+- id: botrytis
+  text: Botrytis (grey mould) starts on pruning wounds in humid nights; prune in the morning so wounds dry
+  parent: pests
+- id: crops
+  text: "Crops: varieties and feeding"
+  parent: greenhouse
+  meta: {domain: crops}
+- id: feed_old
+  text: Standard feed is EC 2.2 with potassium raised at fruit set (2025 schedule)
+  parent: crops
+  days_ago: 400
+  valid_until_days_ago: 60         # superseded: hidden by the validity policy
+  meta: {version: "2025"}
+- id: feed_new
+  text: Standard feed is EC 2.5 with calcium raised in hot weeks (2026 schedule)
+  parent: crops
+  days_ago: 60
+  valid_from_days_ago: 60
+  meta: {version: "2026"}
+- id: bays
+  text: Scouting notes per bay
+  parent: greenhouse
+  meta: {domain: scouting}
+- id: bay3
+  text: "Bay 3: tomato, variety Merlice, planted in week 4"   # "Bay 3" is an entity
+  parent: bays
+- id: bay3_whitefly
+  text: "Bay 3: whitefly at 8 adults per leaf on the south row"
+  parent: bay3
+  days_ago: 2
+  meta: {kind: observation}        # dated kinds: event, ticket, issue, case, observation
+- id: bay3_humidity
+  text: "Bay 3: night humidity logged at 90% for three nights"
+  parent: bay3
+  days_ago: 1
+  meta: {kind: observation}
+profiles:
+- name: agronomist-model
+  provider: provider-a             # the provider name a router looks for
+  domains: [climate, pests, crops]
+  reasoning: 0.85
+  reliability: 0.8
+  cost_per_call: 1.2
+  latency_s: 1.5
+- name: scout-model
+  provider: provider-b
+  domains: [scouting, operations]
+  reasoning: 0.6
+  reliability: 0.9
+  cost_per_call: 0.5
+  latency_s: 0.5
+roles:
+- name: agronomist
+  description: Crop and climate agronomist
+  system_prompt: You are a greenhouse agronomist. Answer from the records; cite record ids.
+  domains: [climate, pests, crops]
+  profile: agronomist-model
+- name: scout
+  description: Pest scout
+  system_prompt: You summarise scouting notes with their dates; cite record ids.
+  domains: [scouting]
+  profile: scout-model
+tasks:
+- question: Bay 3 shows whitefly and humid nights; what should we do this week?
+  expected_facets: [Encarsia, humidity]
+- question: What is the current standard feed?
+  expected_facets: [EC 2.5]
+policy:
+  max_subtasks: 3
+  total_budget: 6.0                # 5.0 would skip the third sub-task of the first task (see the docs)
+  decay: half_life:720+validity    # 30-day half-life for dated records, validity windows enforced
+  constraints: {coverage: 0.5}
