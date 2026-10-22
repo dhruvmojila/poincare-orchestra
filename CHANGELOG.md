@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.0] — 2026-10-10
+## [0.1.0] — 2026-10-21
 ### Fixed
 - Sub-tasks carry a `query_text` used for retrieval and gain estimation, so the display-only "(focus: domain)" label no longer shifts the embedding of branch-scoped searches (the clinical-anatomy ACL task went from 0 to full facet recall).
 
