@@ -16,6 +16,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install poincare-memory (PyPI, else the GitHub repository)
+        env:
+          POINCARE_MEMORY_TOKEN: ${{ secrets.POINCARE_MEMORY_TOKEN }}
+        run: |
+          python -m pip install "poincare-memory>=0.1.0" 2>/dev/null \
+            || python -m pip install "poincare-memory @ git+https://${POINCARE_MEMORY_TOKEN:+${POINCARE_MEMORY_TOKEN}@}github.com/dhruvmojila/poincare-memory.git@main"
       - run: python -m pip install -e ".[docs,yaml]"
       - run: mkdocs build --strict
       - run: mkdocs gh-deploy --force --no-history

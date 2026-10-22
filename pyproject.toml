@@ -30,7 +30,7 @@ yaml = ["pyyaml>=6"]
 docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.26"]
 dev = [
   "pytest>=8",
-  "ruff>=0.6",
+  "ruff>=0.17.1,<0.18",
   "mypy>=1.10",
   "build>=1.2",
   "twine>=5",
@@ -67,6 +67,10 @@ ignore = ["E501", "RUF001", "RUF002", "RUF003"]
 [tool.mypy]
 python_version = "3.10"
 strict = true
+# numpy ships different stubs per Python version (numpy < 2.3 on 3.10/3.11); these two strict
+# checks flip between "Any" and typed arrays depending on the resolved numpy, so they are off.
+warn_return_any = false
+disallow_any_generics = false
 ignore_missing_imports = true
 files = ["src"]
 plugins = ["pydantic.mypy"]
