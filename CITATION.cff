@@ -9,6 +9,14 @@ authors:
 version: 0.1.0
 date-released: "2026-10-21"
 license: Apache-2.0
+doi: 10.5281/zenodo.23551737
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23551737
+    description: "Zenodo concept DOI, resolves to the latest release"
+  - type: doi
+    value: 10.5281/zenodo.23551738
+    description: "Zenodo DOI of version 0.1.0"
 repository-code: "https://github.com/dhruvmojila/poincare-orchestra"
 abstract: "Scenario-first reference implementation of LLM orchestration with geometry-aware memory: metacognitive controller, provider-agnostic ensemble with throttling detection, multi-objective synthesis."
 keywords: [llm orchestration, multi-agent systems, agent memory, hyperbolic embeddings]

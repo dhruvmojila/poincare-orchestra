@@ -10,6 +10,16 @@
   ],
   "license": "apache-2.0",
   "description": "Official open-source reference implementation of the controller, ensemble and synthesis components of 'LLM Orchestration with Geometry-Aware Memory' (IEEE ICBDML 2026, doi:10.1109/ICBDML68582.2026.11544690). Written after the paper; the original experimental system is not released.",
+  "keywords": [
+    "large language models",
+    "LLM orchestration",
+    "multi-agent systems",
+    "agent memory",
+    "hyperbolic embeddings",
+    "Poincaré ball",
+    "retrieval-augmented generation",
+    "response synthesis"
+  ],
   "related_identifiers": [
     {
       "identifier": "https://doi.org/10.1109/ICBDML68582.2026.11544690",

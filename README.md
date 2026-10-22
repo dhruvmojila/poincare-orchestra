@@ -2,6 +2,7 @@
 
 [![Docs](https://img.shields.io/badge/docs-dhruvmojila.github.io%2Fpoincare--orchestra-indigo)](https://dhruvmojila.github.io/poincare-orchestra)
 [![Paper](https://img.shields.io/badge/DOI-10.1109%2FICBDML68582.2026.11544690-blue)](https://doi.org/10.1109/ICBDML68582.2026.11544690)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23551737.svg)](https://doi.org/10.5281/zenodo.23551737)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 **Scenario-first LLM orchestration with geometry-aware memory.** Companion to [`poincare-memory`](https://github.com/dhruvmojila/poincare-memory) and the official open-source reference implementation of the controller, ensemble and synthesis components of
@@ -82,4 +83,4 @@ The test suite executes every Python code block and every `poincare-orchestra` c
 
 ## Citing
 
-Cite the paper (BibTeX in `CITATION.cff`). Licence: Apache-2.0. © 2026 Dhruv Mojila.
+Cite the paper (BibTeX in `CITATION.cff`). The software itself is archived on Zenodo under the concept DOI [10.5281/zenodo.23551737](https://doi.org/10.5281/zenodo.23551737), which always resolves to the latest release. Licence: Apache-2.0. © 2026 Dhruv Mojila.
